@@ -1,38 +1,25 @@
-#language: pt
-#utf-8
- 
-Dado(/^que acesso o site orangehrm$/) do
-  visit("http://opensource.demo.orangehrmlive.com/index.php/auth/login")
-end
- 
-Quando(/^cadastro um novo empregado$/) do
-  find(:id, 'menu_pim_viewPimModule').click
- 
-  #Clicar no botão adicionar usuário
-  click_button('btnAdd')
- 
-  #Nome Employee
-  fill_in('firstName', :with =>'Gilcicleide')
- 
-  #Nome usuário
-  fill_in('middleName', :with =>'Moreira')
- 
-  #Senha
-  fill_in('lastName', :with =>'Vechi')
- 
-  click_button('btnSave')
-end
- 
-Quando (/^realizo login$/) do
-  fill_in('txtUsername', :with =>'Admin')
-  fill_in('txtPassword', :with =>'admin')
+Dado(/^que esteja logada na pagina inicial do site Orange$/) do 
+
+  visit "http://opensource.demo.orangehrmlive.com"
+  fill_in('txtUsername', :with => 'Admin')
+  fill_in('txtPassword', :with => 'admin')
   click_button('btnLogin')
-end
- 
-Então (/^é exibida a pagina inicial$/) do
-  assert_text('Dashboard')
-end
- 
-Então(/^empregado é cadastrado com sucesso$/) do
-  assert_text('Personal Details')
-end
+end                                                                           
+                                                                              
+Quando(/^entro em cadastro do candidatos$/) do
+  click_link('menu_recruitment_viewRecruitmentModule')
+  click_link('menu_recruitment_viewCandidates')
+  click_button('btnAdd')   
+end                                                                           
+                                                                              
+Então(/^preencho os campos obrigatorios$/) do                                 
+   fill_in('addCandidate_firstName', :with => 'Cleide')
+   fill_in('addCandidate_lastName', :with => 'Vechi')
+   fill_in('addCandidate_email', :with => 'gvehi@gmail.com')
+   click_button('btnSave')
+end                                                                           
+                                                                              
+Então(/^valido que o cadastro foi efetuado com sucesso$/) do  
+  click_button('btnBack')
+  assert_text("Cleide Vechi")
+end                                                                          
